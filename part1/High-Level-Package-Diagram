@@ -1,69 +1,30 @@
 classDiagram
     namespace PresentationLayer {
-        class APIEndpoints {
-            +UserRoutes
-            +PlaceRoutes
-            +ReviewRoutes
-            +AmenityRoutes
-        }
+        class APIEndpoints
+        class Services
     }
 
     namespace BusinessLogicLayer {
         class HBnBFacade {
             <<Facade>>
-            +create_user()
-            +get_user()
-            +create_place()
-            +create_review()
-            +add_amenity()
         }
-        class User {
-            +id: String
-            +email: String
-            +first_name: String
-            +last_name: String
-        }
-        class Place {
-            +id: String
-            +title: String
-            +price: Float
-            +latitude: Float
-            +longitude: Float
-        }
-        class Review {
-            +id: String
-            +text: String
-            +rating: Int
-        }
-        class Amenity {
-            +id: String
-            +name: String
-        }
+        class User
+        class Place
+        class Review
+        class Amenity
     }
 
     namespace PersistenceLayer {
         class IPersistenceRepository {
             <<Interface>>
-            +add(entity)
-            +get(entity_id)
-            +get_all()
-            +update(entity)
-            +delete(entity_id)
-        }
-        class InMemoryRepository {
-            -data: Dict
-        }
-        class DBRepository {
-            -db_session
         }
     }
 
-    %% Layer Interactions & Facade Pattern Communication
-    APIEndpoints --> HBnBFacade : Delegates API Requests
+    %% Layer Communication Pathways via Facade Pattern
+    APIEndpoints --> HBnBFacade : Communicates
+    Services --> HBnBFacade : Communicates
     HBnBFacade --> User : Manages
     HBnBFacade --> Place : Manages
     HBnBFacade --> Review : Manages
     HBnBFacade --> Amenity : Manages
-    HBnBFacade --> IPersistenceRepository : Performs CRUD Operations
-    InMemoryRepository ..|> IPersistenceRepository : Realizes
-    DBRepository ..|> IPersistenceRepository : Realizes
+    HBnBFacade --> IPersistenceRepository : Accesses Data
