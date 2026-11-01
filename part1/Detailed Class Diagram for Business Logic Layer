@@ -1,1 +1,54 @@
- 
+classDiagram
+    class BaseModel {
+        +UUID4 id
+        +DateTime created_at
+        +DateTime updated_at
+        +save()
+        +update(dict data)
+    }
+
+    class User {
+        +String first_name
+        +String last_name
+        +String email
+        +String password
+        +Boolean is_admin
+        +register()
+        +update_profile()
+    }
+
+    class Place {
+        +String title
+        +String description
+        +Float price
+        +Float latitude
+        +Float longitude
+        +UUID4 owner_id
+        +add_amenity(Amenity amenity)
+        +add_review(Review review)
+    }
+
+    class Review {
+        +String text
+        +Int rating
+        +UUID4 place_id
+        +UUID4 user_id
+        +validate()
+    }
+
+    class Amenity {
+        +String name
+        +String description
+    }
+
+    %% Inheritance / Generalization
+    BaseModel <|-- User : Generalization
+    BaseModel <|-- Place : Generalization
+    BaseModel <|-- Review : Generalization
+    BaseModel <|-- Amenity : Generalization
+
+    %% Entity Relationships
+    User "1" -- "0..*" Place : owns >
+    User "1" -- "0..*" Review : writes >
+    Place "1" -- "0..*" Review : receives >
+    Place "0..*" -- "0..*" Amenity : features >
